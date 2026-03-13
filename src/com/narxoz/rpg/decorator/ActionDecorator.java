@@ -11,21 +11,26 @@ public abstract class ActionDecorator implements AttackAction {
         return wrappedAction;
     }
 
+    protected String appendEffect(String extraEffect) {
+        String base = wrappedAction.getEffectSummary();
+        if (base == null || base.isBlank() || "No extra effects".equals(base)) {
+            return extraEffect;
+        }
+        return base + "; " + extraEffect;
+    }
+
     @Override
     public String getActionName() {
-        // TODO: Delegate to wrapped action, then extend if needed.
         return wrappedAction.getActionName();
     }
 
     @Override
     public int getDamage() {
-        // TODO: Delegate to wrapped action, then extend if needed.
         return wrappedAction.getDamage();
     }
 
     @Override
     public String getEffectSummary() {
-        // TODO: Delegate to wrapped action, then extend if needed.
         return wrappedAction.getEffectSummary();
     }
 }
