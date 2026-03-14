@@ -5,9 +5,9 @@ import com.narxoz.rpg.enemy.BossEnemy;
 import com.narxoz.rpg.hero.HeroProfile;
 
 public class DungeonFacade {
-    private final PreparationService preparationService = new PreparationService();
-    private final BattleService battleService = new BattleService();
-    private final RewardService rewardService = new RewardService();
+    private PreparationService preparationService = new PreparationService();
+    private BattleService battleService = new BattleService();
+    private RewardService rewardService = new RewardService();
 
     public DungeonFacade setRandomSeed(long seed) {
         battleService.setRandomSeed(seed);
@@ -15,14 +15,18 @@ public class DungeonFacade {
     }
 
     public AdventureResult runAdventure(HeroProfile hero, BossEnemy boss, AttackAction action) {
-        // TODO: Coordinate subsystem calls in a clean order.
-        // Suggested flow:
-        // 1) preparation
-        // 2) battle
-        // 3) reward
-        AdventureResult result = battleService.battle(hero, boss, action);
         String preparationSummary = preparationService.prepare(hero, boss, action);
-        result.addLine(preparationSummary);
+        if (hero == null || boss == null || action == null) {
+            AdventureResult result = new AdventureResult();
+            result.setWinner("No contest");
+            result.setRounds(0);
+            result.addLine(preparationSummary);
+            result.setReward("No reward");
+            return result;
+        }
+
+        AdventureResult result = battleService.battle(hero, boss, action);
+        result.addLineAtStart(preparationSummary);
         result.setReward(rewardService.determineReward(result));
         return result;
     }
