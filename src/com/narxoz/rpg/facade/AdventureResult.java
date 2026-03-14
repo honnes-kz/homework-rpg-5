@@ -8,7 +8,7 @@ public class AdventureResult {
     private String winner;
     private int rounds;
     private String reward;
-    private final List<String> log = new ArrayList<>();
+    private List<String> log = new ArrayList<>();
 
     public String getWinner() {
         return winner;
@@ -36,6 +36,10 @@ public class AdventureResult {
 
     public void addLine(String line) {
         log.add(line);
+    }
+
+    public void addLineAtStart(String line) {
+        log.add(0, line);
     }
 
     public List<String> getLog() {
