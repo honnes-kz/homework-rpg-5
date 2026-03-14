@@ -1,9 +1,9 @@
 package com.narxoz.rpg.enemy;
 
 public class BossEnemy {
-    private final String name;
+    private String name;
     private int health;
-    private final int attackPower;
+    private int attackPower;
 
     public BossEnemy(String name, int health, int attackPower) {
         this.name = name;
@@ -24,12 +24,13 @@ public class BossEnemy {
     }
 
     public void takeDamage(int amount) {
-        // TODO: Decide how boss damage should be applied and clamped.
-        health -= amount;
+        if (amount <= 0) {
+            return;
+        }
+        health = Math.max(0, health - amount);
     }
 
     public boolean isAlive() {
-        // TODO: Decide whether additional boss states belong here.
         return health > 0;
     }
 }
